@@ -35,7 +35,8 @@ class AppTheme {
     visualDensity: VisualDensity.adaptivePlatformDensity,
   );
 
-  static Brightness get currentSystemBrightness => SchedulerBinding.instance.window.platformBrightness;
+  static Brightness get currentSystemBrightness =>
+      SchedulerBinding.instance.window.platformBrightness;
 
   static setStatusBarAndNavigationBarColors(ThemeMode themeMode) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -50,4 +51,10 @@ class AppTheme {
       systemNavigationBarDividerColor: Colors.transparent,
     ));
   }
+}
+
+extension ThemeExtras on ThemeData {
+  Color get particlesColor => brightness == Brightness.light
+      ? AppTheme.lightParticleColor
+      : AppTheme.darkParticleColor;
 }

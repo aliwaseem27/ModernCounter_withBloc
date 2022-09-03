@@ -14,7 +14,6 @@ class AppRouter {
       case counter:
         return MaterialPageRoute(
           builder: (_) => CounterScreen(
-            title: Strings.counterScreenTitle,
           ),
         );
       default:
