@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modern_counter/logic/cubit/counter_cubit.dart';
 
 class CounterSlider extends StatefulWidget {
   const CounterSlider({Key? key}) : super(key: key);
@@ -115,9 +117,9 @@ class Stepper2State extends State<CounterSlider>
     _controller.stop();
 
     if (_controller.value <= -0.20) {
-      // setState(() => isHor ? _value-- : _value++);
+      context.read<CounterCubit>().decrement();
     } else if (_controller.value >= 0.20) {
-      // setState(() => isHor ? _value++ : _value--);
+      context.read<CounterCubit>().increment();
     }
     _controller.animateTo(0.0,
         curve: Curves.bounceOut, duration: const Duration(milliseconds: 500));

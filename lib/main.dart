@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:modern_counter/logic/cubit/counter_cubit.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'core/constants/strings.dart';
 import 'core/themes/app_theme.dart';
@@ -7,9 +10,15 @@ import 'logic/cubit/theme_cubit.dart';
 import 'logic/debug/app_bloc_observer.dart';
 import 'presentation/router/app_router.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = AppBlocObserver();
-  runApp(const App());
+  final storage = await HydratedStorage.build(
+      storageDirectory: await getApplicationDocumentsDirectory());
+  HydratedBlocOverrides.runZoned(
+    () => runApp(App()),
+    storage: storage,
+  );
 }
 
 class App extends StatelessWidget {
@@ -21,6 +30,9 @@ class App extends StatelessWidget {
       providers: [
         BlocProvider<ThemeCubit>(
           create: (context) => ThemeCubit(),
+        ),
+        BlocProvider<CounterCubit>(
+          create: (context) => CounterCubit(),
         ),
       ],
       child: CounterApp(),
@@ -62,7 +74,8 @@ class _CounterAppState extends State<CounterApp> with WidgetsBindingObserver {
       title: Strings.appTitle,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: context.select((ThemeCubit themeCubit) => themeCubit.state.themeMode),
+      themeMode:
+          context.select((ThemeCubit themeCubit) => themeCubit.state.themeMode),
       debugShowCheckedModeBanner: false,
       initialRoute: AppRouter.counter,
       onGenerateRoute: AppRouter.onGenerateRoute,
