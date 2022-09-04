@@ -13,8 +13,7 @@ class AppRouter {
     switch (settings.name) {
       case counter:
         return MaterialPageRoute(
-          builder: (_) => CounterScreen(
-          ),
+          builder: (_) => CounterScreen(),
         );
       default:
         throw const RouteException('Route not found!');
