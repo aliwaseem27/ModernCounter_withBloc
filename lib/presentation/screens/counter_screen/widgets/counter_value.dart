@@ -20,7 +20,7 @@ class _CounterValueState extends State<CounterValue>
   void initState() {
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     super.initState();
   }
@@ -33,19 +33,20 @@ class _CounterValueState extends State<CounterValue>
 
   @override
   Widget build(BuildContext context) {
-    _animationController.reset();
-    // _animationController.forward(from: 0.0);
+    _animationController.forward(from: 0.0);
     return ZoomIn(
-      duration: const Duration(milliseconds: 500),
-      controller: (controller) => controller = _animationController,
       manualTrigger: true,
+      controller: (controller) {
+        controller = _animationController;
+        return controller;},
       child: Text(
-        context.select(
-            (CounterCubit cubit) => cubit.state.counterValue).toString(),
-        style: Theme.of(context).textTheme.headline1?.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 80,
-            ),
+        context
+            .select((CounterCubit cubit) => cubit.state.counterValue)
+            .toString(),
+        style: Theme.of(context)
+            .textTheme
+            .headline1
+            ?.copyWith(fontWeight: FontWeight.bold, fontSize: 80),
       ),
     );
   }
